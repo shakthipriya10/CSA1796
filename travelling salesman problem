@@ -1,0 +1,35 @@
+mport sys
+
+def nearest_neighbor(graph):
+    num_cities = len(graph)
+    unvisited = list(range(num_cities))
+    tour = [0]
+    unvisited.remove(0)
+
+    while unvisited:
+        current_city = tour[-1]
+        nearest_city = min(unvisited, key=lambda city: graph[current_city][city])
+        tour.append(nearest_city)
+        unvisited.remove(nearest_city)
+
+    return tour
+
+def calculate_tour_length(graph, tour):
+    length = 0
+    for i in range(len(tour)):
+        length += graph[tour[i]][tour[(i + 1) % len(tour)]]
+    return length
+
+if _name_ == "_main_":
+    graph = [
+        [0, 29, 20, 21],
+        [29, 0, 15, 18],
+        [20, 15, 0, 17],
+        [21, 18, 17, 0]
+    ]
+
+    tour = nearest_neighbor(graph)
+    tour_length = calculate_tour_length(graph, tour)
+
+print("Tour:", tour)
+    print("Tour Length:", tour_length)
