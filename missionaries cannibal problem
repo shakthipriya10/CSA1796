@@ -1,0 +1,54 @@
+rom collections import deque
+def is_valid_state(state):
+    m_left, c_left, b_left, m_right, c_right, b_right = state
+    if 0 <= m_left <= 3 and 0 <= c_left <= 3 and 0 <= m_right <= 3 and 0 <= c_right <= 3:
+        if m_left < c_left and m_left > 0:
+            return False
+        if m_right < c_right and m_right > 0:
+            return False
+        return True
+    return False
+def is_goal_state(state):
+    return state == (0, 0, 0, 3, 3, 1)
+def get_successors(state):
+    successors = []
+    m_left, c_left, b_left, m_right, c_right, b_right = state
+    if b_left == 1:
+        for m in range(3):
+            for c in range(3):
+                if 0 < m + c <= 2:
+                    new_state = (m_left - m, c_left - c, 0, m_right + m, c_right + c, 1)
+                    if is_valid_state(new_state):
+                        successors.append(new_state)
+    else:
+        new_state = (m_left, c_left, 1, m_right, c_right, 0)
+        if is_valid_state(new_state):
+            successors.append(new_state)
+    return successors
+def bfs_search():
+    initial_state = (3, 3, 1, 0, 0, 0)
+    visited = set()
+    queue = deque([(initial_state, [])])
+    while queue:
+        current_state, path = queue.popleft()
+        if is_goal_state(current_state):
+            return path
+        visited.add(current_state)
+        successors = get_successors(current_state)
+        for successor in successors:
+            if successor not in visited:
+ew_path = path + [successor]
+                queue.append((successor, new_path))
+    return None
+def print_solution(path):
+    print("Missionaries and Cannibals Solution:")
+    for state in path:
+        print(state)
+    print("Goal state reached.")
+if _name_ == "_main_":
+
+    solution_path = bfs_search()
+    if solution_path:
+        print_solution(solution_path)
+    else:
+        print("No solution found.")
