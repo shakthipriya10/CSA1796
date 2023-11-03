@@ -1,0 +1,33 @@
+from itertools import product
+from collections import defaultdict
+def is_valid_assignment(assignment, neighbors):
+    for state, neighbor in neighbors:
+        if state in assignment and neighbor in assignment and assignment[state] == assignment[neighbor]:
+            return False
+    return True
+def backtracking_search(variables, domain, neighbors):
+    return backtrack({}, variables, domain, neighbors)
+def backtrack(assignment, variables, domain, neighbors):
+    if len(assignment) == len(variables):
+        return assignment
+    unassigned_states = [var for var in variables if var not in assignment]
+    for value in domain:
+        assignment[unassigned_states[0]] = value
+        if is_valid_assignment(assignment, neighbors):
+            result = backtrack(assignment, variables, domain, neighbors)
+            if result:
+                return result
+        assignment.pop(unassigned_states[0])
+    return None
+if _name_ == "_main_":
+    variables = ['WA', 'NT', 'SA', 'Q', 'NSW', 'V', 'T']
+    domain = ['R', 'G', 'B']  # Colors: Red, Green, Blue
+    neighbors = [('WA', 'NT'), ('WA', 'SA'), ('NT', 'SA'), ('NT', 'Q'), ('SA', 'Q'),
+                 ('SA', 'NSW'), ('SA', 'V'), ('Q', 'NSW'), ('NSW', 'V')]
+    solution = backtracking_search(variables, domain, neighbors)
+    if solution:
+        print("Solution found:")
+        for state, color in solution.items():
+            print(f"{state}: {color}")
+    else:
+        print("No solution found.")
