@@ -1,0 +1,26 @@
+from itertools import permutations
+def solve_cryptarithmetic(puzzle):
+    letters = set("".join(puzzle))
+    if len(letters) > 10:
+        print("Too many unique characters for a 10-digit solution.")
+        return None
+    for perm in permutations('0123456789', len(letters)):
+        solution = dict(zip(letters, perm))
+        if all(solution[word[0]] != '0' for word in puzzle):
+            num1 = int("".join(solution[char] for char in puzzle[0]))
+            num2 = int("".join(solution[char] for char in puzzle[1]))
+            result = int("".join(solution[char] for char in puzzle[2]))
+            if num1 + num2 == result:
+                return solution
+    return None
+if name == "_main":
+    puzzle = ["TWO","TWO","FOUR"]
+    solution = solve_cryptarithmetic(puzzle)
+    if solution:
+        print("Solution:")
+        for word in puzzle:
+            for char in word:
+                print(f"{char} = {solution[char]}", end="  ")
+            print()
+    else:
+        print("No solution found.")
