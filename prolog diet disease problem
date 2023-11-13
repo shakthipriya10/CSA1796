@@ -1,0 +1,9 @@
+disease(diabetes, 'Limit sugar and carbohydrates. Increase fiber intake.').
+disease(hypertension, 'Reduce sodium intake. Increase potassium-rich foods.').
+disease(high_cholesterol, 'Limit saturated fats. Increase fiber and omega-3 fatty acids.').
+disease(celiac_disease, 'Avoid gluten-containing foods like wheat, barley, and rye.').
+disease(vegetarian, 'Follow a plant-based diet. Avoid meat and animal products.').
+suggest_diet(Person, Disease, Diet) :-
+    disease(Disease, Diet),
+    write('For '), write(Person), write(', with '), write(Disease), nl,
+    write('Suggested Diet: '), write(Diet), nl.
