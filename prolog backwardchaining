@@ -1,0 +1,20 @@
+has_feathers(bird).
+can_fly(bird).
+lays_eggs(bird).
+has_scales(fish).
+swims(fish).
+
+% Define rules for inferring new information.
+bird(X) :- has_feathers(X), lays_eggs(X), can_fly(X).
+
+% Define a goal for backward chaining.
+is_bird(X) :- bird(X).
+
+% Example queries to use backward chaining to find if an animal is a bird.
+% Query to determine if a bird can fly.
+% ?- is_bird(X).
+%
+% Query to find animals that have feathers.
+% ?- has_feathers(X), is_bird(X).
+%
+% Query to find animals that lay eggs and can fly.
