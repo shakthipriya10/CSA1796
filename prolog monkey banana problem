@@ -1,0 +1,12 @@
+initial_state(at(door), on_floor, at(banana), has_not).
+action(grab, on_floor, at(banana), has_not, has).
+action(climb, on_floor, at(X), has, on_box) :- box(X).
+action(push(X), on_floor, at(X), has, on_floor) :- box(X).
+action(walk, on_floor, at(X), has, on_floor) :- not(at(door, X)).
+goal_state(_, _, _, has).
+satisfies(go(S, A, S1), state(S), action(A), state(S1)).
+path(State, [], State).
+path(State, [Action | Actions], FinalState) :-
+    satisfies(go(State, Action, NextState), State, Action, NextState),
+    path(NextState, Actions, FinalState).
+goal_reached(State) :- goal_state(State, _, _, has).
