@@ -1,0 +1,19 @@
+symptom(feeling_fatigue).
+symptom(fever).
+symptom(cough).
+symptom(headache).
+symptom(chest_pain).
+symptom(rash).
+symptom(abdominal_pain).
+condition(cold, [fever, cough, headache]).
+condition(flu, [fever, cough, fatigue]).
+condition(allergy, [rash, fatigue]).
+condition(pneumonia, [fever, cough, chest_pain]).
+condition(food_poisoning, [abdominal_pain, fatigue]).
+diagnose(Condition, Symptoms) :-
+    condition(Condition, ConditionSymptoms),
+    subset(ConditionSymptoms, Symptoms).
+subset([], _).
+subset([H|T], List) :-
+    member(H, List),
+    subset(T, List).
