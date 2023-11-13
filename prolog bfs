@@ -1,0 +1,49 @@
+% Define the graph and heuristic values (h values).
+% Graph represented as edges and their costs.
+edge(a, b, 5).
+edge(a, c, 10).
+edge(b, d, 7).
+edge(c, d, 2).
+edge(d, e, 3).
+edge(c, e, 8).
+
+% Heuristic values (h values) for each node to the goal node 'e'.
+heuristic(a, 12).
+heuristic(b, 7).
+heuristic(c, 8).
+heuristic(d, 2).
+heuristic(e, 0).
+
+% Best First Search
+best_first_search(Start, Goal) :- 
+    best_first_search([[Start, [Start], 0]], Goal).
+
+% If the current node is the goal, return the path.
+best_first_search([[Goal, Path, Cost] | _], Goal) :-
+    reverse(Path, ReversePath),
+    format('Solution Path: ~w~n', [ReversePath]).
+
+% Explore the next node with the lowest estimated cost (f value).
+best_first_search(Queue, Goal) :-
+    min_f(Queue, [Node, Path, Cost], RestQueue),
+    findall([Next, [Next | Path], NewCost],
+            (edge(Node, Next, EdgeCost),
+             \+ member(Next, Path),
+             heuristic(Next, H),
+             NewCost is Cost + EdgeCost + H),
+            Children),
+    append(Children, RestQueue, NewQueue),
+    best_first_search(NewQueue, Goal).
+
+% Find the node with the minimum estimated cost (f value).
+min_f([Node | RestQueue], MinNode, RestQueueMin) :-
+    min_f(RestQueue, Node, MinNode, RestQueueMin).
+
+min_f([], MinNode, MinNode, []).
+min_f([[Node, Path, Cost] | RestQueue], [MinNode, MinPath, MinCost], Result, [Node | RestQueueMin]) :-
+    (Cost < MinCost ->
+        min_f(RestQueue, [Node, Path, Cost], Result, RestQueueMin);
+    min_f(RestQueue, [MinNode, MinPath, MinCost], Result, [Node | RestQueueMin])).
+
+% Example query:
+% best_first_search(a, e).
