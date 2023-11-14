@@ -1,0 +1,21 @@
+edge(a, b).
+edge(a, c).
+edge(b, d).
+edge(b, e).
+edge(c, f).
+edge(c, g).
+edge(d, h).
+edge(e, i).
+breadth_first_search(Start, Goal, Path) :-
+    bfs([[Start]], Goal, Path).
+bfs([[Goal|Path]|_], Goal, [Goal|Path]).
+bfs([Path|Paths], Goal, FinalPath) :-
+    expand(Path, NewPaths),
+    append(Paths, NewPaths, Queue),
+    bfs(Queue, Goal, FinalPath).
+expand([Node|Path], NewPaths) :-
+    findall([NewNode,Node|Path],
+            (edge(Node, NewNode),
+             \+ member(NewNode, [Node|Path])),
+            NewPaths),
+    NewPaths \= [].
