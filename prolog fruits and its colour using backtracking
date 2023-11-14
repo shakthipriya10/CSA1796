@@ -1,0 +1,16 @@
+% Define facts about fruits and their colors.
+fruit(apple, red).
+fruit(banana, yellow).
+fruit(grape, purple).
+fruit(orange, orange).
+fruit(strawberry, red).
+fruit(blueberry, blue).
+fruit(watermelon, green).
+fruit(kiwi, brown).
+
+% Define a rule to check if a fruit is a specific color.
+is_color(Fruit, Color) :- fruit(Fruit, Color).
+
+% Define a predicate to find fruits of a specific color using backtracking.
+find_fruit(Color, Fruits) :-
+    findall(Fruit, is_color(Fruit, Color), Fruits).
