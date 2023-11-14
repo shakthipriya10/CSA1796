@@ -1,0 +1,10 @@
+parent(john, alice).
+parent(john, bob).
+parent(alice, carol).
+parent(bob, dave).
+parent(carol, emily).
+grandparent(X, Y) :- parent(X, Z), parent(Z, Y).
+ancestor(X, Y) :- parent(X, Y).
+ancestor(X, Y) :- parent(X, Z), ancestor(Z, Y).
+related(X, Y) :- ancestor(X, Y).
+related(X, Y) :- ancestor(Y, X).
